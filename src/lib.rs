@@ -150,7 +150,8 @@ impl espeak_VOICE {
 
 pub type t_espeak_callback = extern "C" fn(*mut c_short, c_int, *mut espeak_EVENT) -> c_int;
 
-#[link(name = "espeak-ng", kind = "static")]
+#[cfg_attr(target_os = "linux", link(name = "espeak-ng", kind = "static"))]
+#[cfg_attr(target_os = "macos", link(name = "espeak-ng", kind = "dylib"))]
 extern "C" {
 	pub fn espeak_Initialize(output: espeak_AUDIO_OUTPUT, buflength: c_int, path: *const c_char, options: c_int) -> c_int;
 	pub fn espeak_SetSynthCallback(SynthCallback: t_espeak_callback);
